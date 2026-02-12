@@ -41,6 +41,12 @@ class PDController:
         assert u_min < u_max, "u_min should be less than u_max"
         # Initialize variables here
         ######### Your code starts here #########
+        self.kP = kP
+        self.kD = kD
+        self.u_min = u_min
+        self.u_max = u_max
+        self.t_prev = 0.0
+        self.err_prev = 0.0
 
         ######### Your code ends here #########
 
@@ -51,6 +57,16 @@ class PDController:
 
         # Compute control action here
         ######### Your code starts here #########
+        value = -1 * (self.kP * err + (self.kD * de / dt))
+        if value < self.u_min:
+            value = self.u_min
+        elif value > self.u_max:
+            value = self.u_max
+
+        self.t_prev = t
+        self.err_prev = err
+        return value
+
 
         ######### Your code ends here #########
 
@@ -66,6 +82,12 @@ class RobotController:
 
         # Define PD controller for wall following here
         ######### Your code starts here #########
+        self.controller = PDController(
+            kP=1.0,
+            kD=1.0,
+            u_min=-1.0,
+            u_max=1.0
+        )
 
         ######### Your code ends here #########
 
@@ -76,6 +98,7 @@ class RobotController:
         raw = state.cliff
         ######### Your code starts here #########
         # conversion from raw sensor values to distance. Use equation from Lab 2
+        distance = 162908.96 * (raw ** -2.27801)
 
         ######### Your code ends here #########
         # print(f"raw: {raw}\tdistance: {distance}")
@@ -96,6 +119,10 @@ class RobotController:
 
             # using PD controller, compute and send motor commands
             ######### Your code starts here #########
+            error = self.desired_distance - self.ir_distance
+            u = self.controller.control(error, rospy.get_time())
+            ctrl_msg.linear.x = 0.2
+            ctrl_msg.angular.z = u
 
             ######### Your code ends here #########
 
