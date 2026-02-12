@@ -23,6 +23,8 @@ class PController:
         self.kP = kP
         self.u_min = u_min
         self.u_max = u_max
+        self.t_prev = 0.0
+        self.err_prev = 0.0
         
 
         ######### Your code ends here #########
@@ -35,10 +37,10 @@ class PController:
         # Compute control action here
         ######### Your code starts here #########
         value = self.kP * err
-        if value < u_min:
-            value = u_min
-        elif value > u_max:
-            value = u_max
+        if value < self.u_min:
+            value = self.u_min
+        elif value > self.u_max:
+            value = self.u_max
 
         self.t_prev = t
         self.err_prev = err
@@ -83,6 +85,11 @@ class RobotController:
 
         # Define PD controller for wall-following here
         ######### Your code starts here #########
+        self.controller = PController(
+            kP=1.0,
+            u_min=-1.0,
+            u_max=1.0
+        )
 
         ######### Your code ends here #########
 
@@ -110,7 +117,11 @@ class RobotController:
 
             # using PD controller, compute and send motor commands
             ######### Your code starts here #########
-            u = 2 # delete this, just added to solve error temp
+            error = self.desired_distance - self.ir_distance
+            u = self.controller.control(error, rospy.get_time())
+            ctrl_msg.linear.x = 0.2
+            ctrl_msg.angular.z = u
+
 
             ######### Your code ends here #########
 
