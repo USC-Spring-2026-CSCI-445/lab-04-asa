@@ -98,7 +98,7 @@ class RobotController:
         raw = state.cliff
         ######### Your code starts here #########
         # conversion from raw sensor values to distance. Use equation from Lab 2
-        distance = 162908.96 * (raw[0] ** -2.27801)
+        distance = 162908.96 * (raw ** -2.27801)
 
         ######### Your code ends here #########
         # print(f"raw: {raw}\tdistance: {distance}")
