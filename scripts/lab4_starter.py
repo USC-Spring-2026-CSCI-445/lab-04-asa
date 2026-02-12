@@ -17,6 +17,11 @@ class PController:
         assert u_min < u_max, "u_min should be less than u_max"
         # Initialize variables here
         ######### Your code starts here #########
+        self.kP = kP
+        self.u_min = u_min
+        self.u_max = u_max
+        self.t_prev = 0.0
+        self.err_prev = 0.0
 
         ######### Your code ends here #########
 
@@ -27,6 +32,15 @@ class PController:
 
         # Compute control action here
         ######### Your code starts here #########
+        value = -1 * self.kP * err
+        if value < self.u_min:
+            value = self.u_min
+        elif value > self.u_max:
+            value = self.u_max
+
+        self.t_prev = t
+        self.err_prev = err
+        return value
 
         ######### Your code ends here #########
 
