@@ -18,6 +18,12 @@ class PController:
         assert u_min < u_max, "u_min should be less than u_max"
         # Initialize variables here
         ######### Your code starts here #########
+        # kP = controller
+        # u values are distance from wall
+        self.kP = kP
+        self.u_min = u_min
+        self.u_max = u_max
+        
 
         ######### Your code ends here #########
 
@@ -28,6 +34,12 @@ class PController:
 
         # Compute control action here
         ######### Your code starts here #########
+        value = self.kP * err
+        if value < u_min:
+            value = u_min
+        elif value > u_max:
+            value = u_max
+        return value
 
         ######### Your code ends here #########
 
