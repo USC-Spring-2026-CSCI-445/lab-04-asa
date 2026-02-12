@@ -36,7 +36,7 @@ class PController:
 
         # Compute control action here
         ######### Your code starts here #########
-        value = self.kP * err
+        value = -1 * self.kP * err
         if value < self.u_min:
             value = self.u_min
         elif value > self.u_max:
