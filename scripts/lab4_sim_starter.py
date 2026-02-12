@@ -110,6 +110,7 @@ class RobotController:
 
             # using PD controller, compute and send motor commands
             ######### Your code starts here #########
+            u = 2 # delete this, just added to solve error temp
 
             ######### Your code ends here #########
 
