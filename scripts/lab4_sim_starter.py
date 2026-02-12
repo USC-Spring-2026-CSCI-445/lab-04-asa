@@ -39,6 +39,9 @@ class PController:
             value = u_min
         elif value > u_max:
             value = u_max
+
+        self.t_prev = t
+        self.err_prev = err
         return value
 
         ######### Your code ends here #########
