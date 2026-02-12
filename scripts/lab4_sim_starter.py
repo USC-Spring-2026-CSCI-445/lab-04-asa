@@ -60,16 +60,32 @@ class PDController:
         assert u_min < u_max, "u_min should be less than u_max"
         # Initialize variables here
         ######### Your code starts here #########
+        self.kP = kP
+        self.kD = kD
+        self.u_min = u_min
+        self.u_max = u_max
+        self.t_prev = 0.0
+        self.err_prev = 0.0
 
         ######### Your code ends here #########
 
     def control(self, err, t):
         dt = t - self.t_prev
+        de = err - self.err_prev
         if dt <= 1e-6:
             return 0
 
         # Compute control action here
         ######### Your code starts here #########
+        value = -1 * (self.kP * err + (self.kD * de / dt))
+        if value < self.u_min:
+            value = self.u_min
+        elif value > self.u_max:
+            value = self.u_max
+
+        self.t_prev = t
+        self.err_prev = err
+        return value
 
         ######### Your code ends here #########
 
