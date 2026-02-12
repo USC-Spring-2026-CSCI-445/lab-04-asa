@@ -52,6 +52,7 @@ class PDController:
 
     def control(self, err, t):
         dt = t - self.t_prev
+        de = err - self.err_prev
         if dt <= 1e-6:
             return 0
 
